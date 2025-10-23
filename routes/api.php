@@ -25,4 +25,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['user.type:user'])->group(function() {
         Route::apiResource('/users', UserController::class)->only('show', 'update');
     });
+
+    Route::middleware(['auth', 'check.license'])->group(function () {
+        return response()->json(['message' => 'Acesso concedido a recursos protegidos.']);
+    });
+
+    Route::middleware(['check.permission:view-reports'])->group(function () {
+        return response()->json(['message' => 'Acesso concedido a relatórios.']);
+    });
+
+    Route::middleware(['check.permission:edit-users,manage-users'])->group(function () {
+        return response()->json(['message' => 'Acesso concedido à edição de usuários.']);
+    });
 });

@@ -53,4 +53,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function hasPermission($permission)
+    {
+        $permission = is_array($permission) ? $permission['name'] : $permission;
+        
+        return $this->permissions()->where('name', $permission)->exists();
+    }
 }
